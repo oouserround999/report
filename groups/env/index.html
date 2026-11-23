@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>กลุ่มงานอนามัยสิ่งแวดล้อมและชีวอนามัย — สสจ.นครนายก</title>
+  <meta name="description" content="Dashboard กลุ่มงานอนามัยสิ่งแวดล้อมและชีวอนามัย สำนักงานสาธารณสุขจังหวัดนครนายก" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f4f6f9; color: #333; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background-color: #007bff; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,123,255,0.25); flex-wrap: wrap; gap: 10px; }
+    .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .back-btn { color: white; text-decoration: none; font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 6px; transition: background 0.2s; white-space: nowrap; }
+    .back-btn:hover { background: rgba(255,255,255,0.35); }
+    .logo { font-size: 20px; font-weight: 700; }
+    .system-title { font-size: 14px; font-weight: 400; opacity: 0.85; }
+    .container { max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
+    .main-heading { color: #3C8F3F; border-bottom: 2px solid #3C8F3F; padding-bottom: 10px; margin-bottom: 10px; font-weight: 600; font-size: 22px; }
+    .description { font-size: 15px; margin-bottom: 30px; color: #555; font-weight: 400; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .card { background-color: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); text-decoration: none; color: inherit; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 190px; border: 1px solid #e8eef5; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 24px rgba(0,123,255,0.15); border-color: #c8deff; }
+    .card-icon { font-size: 36px; margin-bottom: 12px; }
+    .card-title { font-size: 18px; font-weight: 600; color: #007bff; margin-bottom: 8px; line-height: 1.3; }
+    .card-description { font-size: 13.5px; color: #666; font-weight: 300; flex-grow: 1; line-height: 1.55; }
+    .card-link-btn { display: inline-block; margin-top: 16px; font-size: 13.5px; font-weight: 500; font-family: 'Kanit', sans-serif; color: #3C8F3F; border: 1px solid #3C8F3F; padding: 7px 16px; border-radius: 5px; transition: background-color 0.25s, color 0.25s; width: fit-content; }
+    .card:hover .card-link-btn { background-color: #3C8F3F; color: white; }
+    .footer { text-align: center; padding: 16px; background-color: #343a40; color: #f8f9fa; font-size: 12.5px; font-weight: 300; margin-top: 40px; }
+    @media (max-width: 768px) { .header { flex-direction: column; text-align: center; padding: 14px 20px; } .header-left { flex-direction: column; gap: 8px; } .container { margin: 24px auto; padding: 0 14px; } .card-grid { grid-template-columns: 1fr; gap: 16px; } .card { min-height: auto; padding: 20px; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="../../index.html" class="back-btn">← กลับหน้าหลัก</a>
+      <span class="logo">♻️ กลุ่มงานอนามัยสิ่งแวดล้อมและชีวอนามัย</span>
+    </div>
+    <div class="header-right">
+      <span class="system-title">ระบบรายงานและติดตามสถานการณ์ สสจ.นครนายก</span>
+    </div>
+  </header>
+  <main class="container">
+    <h2 class="main-heading">♻️ กลุ่มงานอนามัยสิ่งแวดล้อมและชีวอนามัย</h2>
+    <p class="description">คุณภาพน้ำ, การจัดการขยะ/ของเสีย, สุขภาพผู้ประกอบอาชีพ — เลือก Dashboard ที่ต้องการ</p>
+    <div class="card-grid">
+      <a href="https://script.google.com/macros/s/AKfycbw-Id_mOf6Sld99Jc1JTmcf8eW9jiv-aLHanPA1rrgoO8IDyAyMb2_hkvYNIzf-iUwp_w/exec" class="card" target="_blank" id="card-pm25">
+        <div>
+          <div class="card-icon">🌫️</div>
+          <h3 class="card-title">ระบบรายงาน PM2.5</h3>
+          <p class="card-description">ระบบรายงานและติดตามสถานการณ์ฝุ่นละอองขนาดไม่เกิน 2.5 ไมครอน (PM2.5) จังหวัดนครนายก</p>
+        </div>
+        <span class="card-link-btn">เข้าสู่ Dashboard</span>
+      </a>
+    </div>
+  </main>
+  <footer class="footer">สำนักงานสาธารณสุขจังหวัดนครนายก · ระบบรายงานและติดตามสถานการณ์สาธารณสุข</footer>
+</body>
+</html>

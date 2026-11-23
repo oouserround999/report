@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>สุขภาพแม่และเด็ก — กลุ่มงานส่งเสริมสุขภาพ สสจ.นครนายก</title>
+  <meta name="description" content="Dashboard สุขภาพแม่และเด็ก กลุ่มงานส่งเสริมสุขภาพ สำนักงานสาธารณสุขจังหวัดนครนายก" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Kanit', sans-serif; background-color: #f4f6f9; color: #333; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    .header { background-color: #007bff; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,123,255,0.25); flex-wrap: wrap; gap: 10px; }
+    .header-left { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .back-btn { color: white; text-decoration: none; font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 6px; transition: background 0.2s; white-space: nowrap; }
+    .back-btn:hover { background: rgba(255,255,255,0.35); }
+    .logo { font-size: 20px; font-weight: 700; }
+    .system-title { font-size: 14px; font-weight: 400; opacity: 0.85; }
+
+    /* ─── BREADCRUMB ──────────────────────────────────── */
+    .breadcrumb { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 10px 30px; font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .breadcrumb a { color: #007bff; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #0056b3; text-decoration: underline; }
+    .breadcrumb .sep { color: #cbd5e1; }
+    .breadcrumb .current { color: #475569; font-weight: 500; }
+
+    /* ─── CONTAINER ───────────────────────────────────── */
+    .container { max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
+    .main-heading { color: #3C8F3F; border-bottom: 2px solid #3C8F3F; padding-bottom: 10px; margin-bottom: 10px; font-weight: 600; font-size: 22px; }
+    .description { font-size: 15px; margin-bottom: 30px; color: #555; font-weight: 400; }
+
+    /* ─── CARD GRID ───────────────────────────────────── */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+    /* ─── CARD ────────────────────────────────────────── */
+    .card { background-color: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); text-decoration: none; color: inherit; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 210px; border: 1px solid #e8eef5; position: relative; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 10px 24px rgba(0,123,255,0.15); border-color: #c8deff; }
+    .card-icon { font-size: 36px; margin-bottom: 12px; line-height: 1; }
+    .card-title { font-size: 17px; font-weight: 600; color: #007bff; margin-bottom: 8px; line-height: 1.35; }
+    .card-description { font-size: 13.5px; color: #666; font-weight: 300; flex-grow: 1; line-height: 1.55; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; flex-wrap: wrap; gap: 8px; }
+    .card-link-btn { display: inline-block; font-size: 13.5px; font-weight: 500; font-family: 'Kanit', sans-serif; color: #3C8F3F; border: 1px solid #3C8F3F; padding: 7px 16px; border-radius: 5px; transition: background-color 0.25s, color 0.25s; white-space: nowrap; }
+    .card:hover .card-link-btn { background-color: #3C8F3F; color: white; }
+
+    /* ─── STATUS BADGE ────────────────────────────────── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .status-badge.in-progress {
+      background-color: #fef9c3;
+      color: #854d0e;
+      border: 1px solid #fde68a;
+    }
+    .status-badge.in-progress::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: #f59e0b;
+      display: inline-block;
+      animation: blink 1.6s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Card ที่มีสถานะ in-progress */
+    .card.wip { border-color: #fde68a; }
+    .card.wip:hover { border-color: #f59e0b; box-shadow: 0 10px 24px rgba(245,158,11,0.15); }
+    .card.wip .card-title { color: #92400e; }
+    .card.wip .card-link-btn { color: #b45309; border-color: #b45309; }
+    .card.wip:hover .card-link-btn { background-color: #b45309; color: white; }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    .footer { text-align: center; padding: 16px; background-color: #343a40; color: #f8f9fa; font-size: 12.5px; font-weight: 300; margin-top: 40px; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      .header { flex-direction: column; text-align: center; padding: 14px 20px; }
+      .header-left { flex-direction: column; gap: 8px; }
+      .breadcrumb { padding: 10px 16px; }
+      .container { margin: 24px auto; padding: 0 14px; }
+      .card-grid { grid-template-columns: 1fr; gap: 16px; }
+      .card { min-height: auto; padding: 20px; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HEADER ─────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn">← กลับกลุ่มงานส่งเสริมสุขภาพ</a>
+      <span class="logo">👶 สุขภาพแม่และเด็ก</span>
+    </div>
+    <div class="header-right">
+      <span class="system-title">ระบบรายงานและติดตามสถานการณ์ สสจ.นครนายก</span>
+    </div>
+  </header>
+
+  <!-- ─── BREADCRUMB ─────────────────────────────────── -->
+  <nav class="breadcrumb" aria-label="breadcrumb">
+    <a href="../../../index.html">🏠 หน้าหลัก</a>
+    <span class="sep">›</span>
+    <a href="../index.html">👨‍👩‍👧‍👦 กลุ่มงานส่งเสริมสุขภาพ</a>
+    <span class="sep">›</span>
+    <span class="current">👶 สุขภาพแม่และเด็ก</span>
+  </nav>
+
+  <!-- ─── MAIN ───────────────────────────────────────── -->
+  <main class="container">
+    <h2 class="main-heading">👶 สุขภาพแม่และเด็ก</h2>
+    <p class="description">Dashboard ติดตามสถานการณ์สุขภาพแม่และเด็ก จังหวัดนครนายก — เลือก Dashboard ที่ต้องการ</p>
+
+    <div class="card-grid">
+
+      <!-- Card 1: DSPM -->
+      <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSVYJESz8iG29OMbM2EIR5MhxJQJUlar74FdOVJPVuOyzRR_fJ2bX8ZEpQN2eHiwq_tiVY4VPTmcPWs/pubhtml"
+         class="card" target="_blank" id="card-dspm">
+        <div>
+          <div class="card-icon">🧒</div>
+          <h3 class="card-title">ร้อยละของเด็กอายุ 0-5 ปี มีพัฒนาการสมวัย (DSPM)</h3>
+          <p class="card-description">ติดตามร้อยละเด็กอายุ 0–5 ปี ที่ผ่านการคัดกรองพัฒนาการสมวัยด้วยเครื่องมือ DSPM ในจังหวัดนครนายก</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </div>
+      </a>
+
+      <!-- Card 2: หญิงตั้งครรภ์ -->
+      <a href="https://nayok.moph.go.th/dashboard/groups/health_promotion/h1/pregnant_dashboard.html"
+         class="card" target="_blank" id="card-pregnant">
+        <div>
+          <div class="card-icon">🤰</div>
+          <h3 class="card-title">หญิงตั้งครรภ์และการดูแลหลังคลอดครบ 3 ครั้งตามเกณฑ์</h3>
+          <p class="card-description">ติดตามความครอบคลุมการฝากครรภ์และการดูแลหลังคลอดครบ 3 ครั้งตามเกณฑ์มาตรฐานในจังหวัดนครนายก</p>
+        </div>
+        <div class="card-footer">
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- ─── FOOTER ─────────────────────────────────────── -->
+  <footer class="footer">สำนักงานสาธารณสุขจังหวัดนครนายก · ระบบรายงานและติดตามสถานการณ์สาธารณสุข</footer>
+
+</body>
+</html>
