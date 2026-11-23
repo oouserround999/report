@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบรายงานและติดตามสถานการณ์ สสจ.นครนายก</title>
+  <meta name="description" content="ระบบรายงานและติดตามสถานการณ์สาธารณสุข สำนักงานสาธารณสุขจังหวัดนครนายก รวม Dashboard ทุกกลุ่มงาน" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Kanit', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────── */
+    .header {
+      background-color: #007bff;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.25);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .system-title {
+      font-size: 15px;
+      font-weight: 400;
+      opacity: 0.85;
+      white-space: nowrap;
+    }
+
+    /* ─── TAB NAV ─────────────────────────────────────────── */
+    .tab-nav-wrapper {
+      background-color: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .tab-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 22px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: #64748b;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      position: relative;
+      bottom: -1px;
+    }
+
+    .tab-btn:hover {
+      color: #007bff;
+    }
+
+    .tab-btn.active {
+      color: #007bff;
+      font-weight: 600;
+      border-bottom-color: #007bff;
+    }
+
+    .tab-btn .tab-icon {
+      font-size: 17px;
+    }
+
+    /* ─── MAIN CONTAINER ─────────────────────────────────── */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 20px 20px;
+      flex: 1;
+    }
+
+    /* ─── TAB PANELS ─────────────────────────────────────── */
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── PANEL HEADING ──────────────────────────────────── */
+    .main-heading {
+      color: #3C8F3F;
+      border-bottom: 2px solid #3C8F3F;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      font-weight: 600;
+      font-size: 22px;
+    }
+
+    .description {
+      font-size: 15px;
+      margin-bottom: 30px;
+      color: #555;
+      font-weight: 400;
+    }
+
+    /* ─── CARD GRID ───────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    /* ─── CARD ───────────────────────────────────────────── */
+    .card {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 190px;
+      border: 1px solid #e8eef5;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 24px rgba(0, 123, 255, 0.15);
+      border-color: #c8deff;
+    }
+
+    .card-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #007bff;
+      margin-top: 0;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .card-description {
+      font-size: 13.5px;
+      color: #666;
+      font-weight: 300;
+      flex-grow: 1;
+      line-height: 1.55;
+    }
+
+    .card-link-btn {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 13.5px;
+      font-weight: 500;
+      font-family: 'Kanit', sans-serif;
+      color: #3C8F3F;
+      border: 1px solid #3C8F3F;
+      padding: 7px 16px;
+      border-radius: 5px;
+      text-align: center;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      width: fit-content;
+    }
+
+    .card:hover .card-link-btn {
+      background-color: #3C8F3F;
+      color: white;
+    }
+
+    /* ─── NOPH EMPTY STATE ───────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: #94a3b8;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 300;
+    }
+
+    .empty-state .coming-soon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .empty-state .coming-soon-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38bdf8;
+      display: inline-block;
+      animation: blink 1.6s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 16px;
+      background-color: #343a40;
+      color: #f8f9fa;
+      font-size: 12.5px;
+      font-weight: 300;
+      margin-top: 40px;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 14px 20px;
+        gap: 6px;
+      }
+
+      .header-left {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .logo { font-size: 20px; }
+      .system-title { font-size: 13px; }
+
+      .tab-nav {
+        padding: 0 10px;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+      .tab-nav::-webkit-scrollbar { display: none; }
+
+      .tab-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .container {
+        padding: 24px 14px 20px;
+      }
+
+      .main-heading { font-size: 18px; }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .card {
+        min-height: auto;
+        padding: 20px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── HEADER ─────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">🏥 สสจ.นครนายก</span>
+      <span class="system-title">ระบบรายงานและติดตามสถานการณ์</span>
+    </div>
+  </header>
+
+  <!-- ─── TAB NAVIGATION ────────────────────────────────── -->
+  <div class="tab-nav-wrapper">
+    <nav class="tab-nav" role="tablist" aria-label="เมนูหลัก Dashboard">
+      <button
+        class="tab-btn active"
+        id="tab-sso"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-sso"
+        onclick="switchTab('sso')"
+      >
+        <span class="tab-icon">🏥</span>
+        DashBoard สสจ.นครนายก
+      </button>
+      <button
+        class="tab-btn"
+        id="tab-noph"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-noph"
+        onclick="switchTab('noph')"
+      >
+        <span class="tab-icon">📊</span>
+        NOPH Operation Dashboard
+      </button>
+    </nav>
+  </div>
+
+  <!-- ─── MAIN ───────────────────────────────────────────── -->
+  <main class="container">
+
+    <!-- ── แท็บ 1: DashBoard สสจ.นครนายก ─────────────────── -->
+    <div class="tab-panel active" id="panel-sso" role="tabpanel" aria-labelledby="tab-sso">
+      <h2 class="main-heading">🧭 เมนูหลัก Dashboard สสจ.นครนายก</h2>
+      <p class="description">
+        คลิกที่กลุ่มงานเพื่อเข้าสู่รายงาน Dashboard ประจำกลุ่มงาน (เมนูทั้งหมดแสดงสู่สาธารณะ)
+      </p>
+
+      <div class="card-grid" id="dashboardGrid">
+
+        <!-- สสจ.นครนายก -->
+        <a href="groups/sso/index.html" class="card" target="_blank" id="card-sso">
+          <div>
+            <div class="card-icon">🏥</div>
+            <h3 class="card-title">สสจ.นครนายก</h3>
+            <p class="card-description">ข้อมูลภาพรวมประชากร และสถิติสาธารณสุขระดับจังหวัด</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 01 -->
+        <a href="groups/digital/index.html" class="card" target="_blank" id="card-digital">
+          <div>
+            <div class="card-icon">📱</div>
+            <h3 class="card-title">กลุ่มงานสุขภาพดิจิทัล</h3>
+            <p class="card-description">ระบบสารสนเทศ, การแพทย์ทางไกล, ความมั่นคงปลอดภัยทางไซเบอร์</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 02 -->
+        <a href="groups/Management/index.html" class="card" target="_blank" id="card-management">
+          <div>
+            <div class="card-icon">🏢</div>
+            <h3 class="card-title">กลุ่มงานบริหารทั่วไป</h3>
+            <p class="card-description">การเงิน, วัสดุ/ครุภัณฑ์, อาคารสถานที่, และงานธุรการ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 03 -->
+        <a href="groups/strategy/index.html" class="card" target="_blank" id="card-strategy">
+          <div>
+            <div class="card-icon">📊</div>
+            <h3 class="card-title">กลุ่มงานพัฒนายุทธศาสตร์สาธารณสุข</h3>
+            <p class="card-description">การวางแผนยุทธศาสตร์, การกำกับติดตามและประเมินผล</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 04 -->
+        <a href="groups/ncd/index.html" class="card" target="_blank" id="card-infectious">
+          <div>
+            <div class="card-icon">🦠</div>
+            <h3 class="card-title">กลุ่มงานควบคุมโรคติดต่อ</h3>
+            <p class="card-description">รายงานโรคติดต่อเฝ้าระวัง, ภัยสุขภาพ และการสอบสวนโรค</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 05 -->
+        <a href="groups/ncd_control/index.html" class="card" target="_blank" id="card-ncd">
+          <div>
+            <div class="card-icon">🚭</div>
+            <h3 class="card-title">กลุ่มงานควบคุมโรคไม่ติดต่อ</h3>
+            <p class="card-description">สถานการณ์โรค NCDs (เบาหวาน, ความดัน), การจัดการปัจจัยเสี่ยง</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 06 -->
+        <a href="groups/pharma/index.html" class="card" target="_blank" id="card-pharma">
+          <div>
+            <div class="card-icon">💊</div>
+            <h3 class="card-title">กลุ่มงานคุ้มครองผู้บริโภคและเภสัชฯ</h3>
+            <p class="card-description">อาหารปลอดภัย, ผลิตภัณฑ์สุขภาพ, การกำกับดูแลยาและเภสัชกรรม</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 07 -->
+        <a href="groups/health/index.html" class="card" target="_blank" id="card-insurance">
+          <div>
+            <div class="card-icon">💰</div>
+            <h3 class="card-title">กลุ่มงานประกันสุขภาพ</h3>
+            <p class="card-description">การบริหารจัดการงบประมาณ สปสช., สิทธิประโยชน์ด้านสุขภาพ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 08 -->
+        <a href="groups/health_promotion/index.html" class="card" target="_blank" id="card-promotion">
+          <div>
+            <div class="card-icon">👨‍👩‍👧‍👦</div>
+            <h3 class="card-title">กลุ่มงานส่งเสริมสุขภาพ</h3>
+            <p class="card-description">สุขภาพแม่และเด็ก, อนามัยโรงเรียน, การดูแลกลุ่มวัยต่างๆ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 09 -->
+        <a href="groups/dental/index.html" class="card" target="_blank" id="card-dental">
+          <div>
+            <div class="card-icon">🦷</div>
+            <h3 class="card-title">กลุ่มงานทันตสาธารณสุข</h3>
+            <p class="card-description">สถานการณ์สุขภาพช่องปาก และความครอบคลุมบริการทันตกรรม</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 10 -->
+        <a href="groups/qualityservice/index.html" class="card" target="_blank" id="card-quality">
+          <div>
+            <div class="card-icon">✨</div>
+            <h3 class="card-title">กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ</h3>
+            <p class="card-description">การรับรองคุณภาพ (HA), มาตรฐานบริการ, การพัฒนาระบบส่งต่อ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 11 -->
+        <a href="groups/legal/index.html" class="card" target="_blank" id="card-legal">
+          <div>
+            <div class="card-icon">⚖️</div>
+            <h3 class="card-title">กลุ่มงานกฎหมาย</h3>
+            <p class="card-description">การดำเนินคดี, การให้คำปรึกษาทางกฎหมาย, และการจัดทำข้อบังคับ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 12 -->
+        <a href="groups/hr/index.html" class="card" target="_blank" id="card-hr">
+          <div>
+            <div class="card-icon">🧑‍💼</div>
+            <h3 class="card-title">กลุ่มงานบริหารทรัพยากรบุคคล</h3>
+            <p class="card-description">อัตรากำลัง, การบรรจุ/แต่งตั้ง, การลา, และการพัฒนาบุคลากร</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 13 -->
+        <a href="groups/env/index.html" class="card" target="_blank" id="card-env">
+          <div>
+            <div class="card-icon">♻️</div>
+            <h3 class="card-title">กลุ่มงานอนามัยสิ่งแวดล้อมและชีวอนามัย</h3>
+            <p class="card-description">คุณภาพน้ำ, การจัดการขยะ/ของเสีย, สุขภาพผู้ประกอบอาชีพ</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- 14 -->
+        <a href="groups/mental/index.html" class="card" target="_blank" id="card-mental">
+          <div>
+            <div class="card-icon">🧠</div>
+            <h3 class="card-title">กลุ่มงานสุขภาพจิตและยาเสพติด</h3>
+            <p class="card-description">สถานการณ์สุขภาพจิต, การบำบัดฟื้นฟูยาเสพติด</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+      </div><!-- /.card-grid -->
+    </div><!-- /#panel-sso -->
+
+    <!-- ── แท็บ 2: NOPH Operation Dashboard ───────────────── -->
+    <div class="tab-panel" id="panel-noph" role="tabpanel" aria-labelledby="tab-noph">
+      <h2 class="main-heading">📊 NOPH Operation Dashboard</h2>
+      <p class="description">
+        รวม Dashboard ปฏิบัติการและการบริหารจัดการระดับจังหวัด
+      </p>
+
+      <div class="card-grid" id="nophGrid">
+
+        <!-- NOPH 01 -->
+        <a href="https://sites.google.com/view/ny-phr-investigate/" class="card" target="_blank" id="card-phr">
+          <div>
+            <div class="card-icon">🔍</div>
+            <h3 class="card-title">รายงานผลตรวจสอบข้อร้องเรียน PHR</h3>
+            <p class="card-description">รายงานผลการตรวจสอบและติดตามข้อร้องเรียนด้านสุขภาพอิเล็กทรอนิกส์ (PHR) จังหวัดนครนายก</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- NOPH 02 -->
+        <a href="https://sites.google.com/view/ny-energy" class="card" target="_blank" id="card-energy">
+          <div>
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">ติดตามการใช้พลังงานเชื้อเพลิง</h3>
+            <p class="card-description">ติดตามและวิเคราะห์การใช้พลังงานและเชื้อเพลิงของหน่วยงานสาธารณสุขในจังหวัดนครนายก</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- NOPH 03 -->
+        <a href="https://nophfda.com/nygismap/dashboard.php" class="card" target="_blank" id="card-gis">
+          <div>
+            <div class="card-icon">🗺️</div>
+            <h3 class="card-title">NY GIS Map</h3>
+            <p class="card-description">ระบบแผนที่ภูมิสารสนเทศ (GIS) แสดงข้อมูลสาธารณสุขเชิงพื้นที่จังหวัดนครนายก</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+        <!-- NOPH 04 -->
+        <a href="https://nayokonepapi.moph.go.th" class="card" target="_blank" id="card-opah">
+          <div>
+            <div class="card-icon">🏥</div>
+            <h3 class="card-title">One Province One Hospital</h3>
+            <p class="card-description">ระบบบริหารจัดการและติดตามผลการดำเนินงานโครงการ One Province One Hospital จังหวัดนครนายก</p>
+          </div>
+          <span class="card-link-btn">เข้าสู่ Dashboard</span>
+        </a>
+
+      </div><!-- /#nophGrid -->
+
+    </div><!-- /#panel-noph -->
+
+  </main>
+
+  <!-- ─── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer">
+    สำนักงานสาธารณสุขจังหวัดนครนายก · ระบบรายงานและติดตามสถานการณ์สาธารณสุข
+  </footer>
+
+  <!-- ─── TAB SCRIPT ──────────────────────────────────────── -->
+  <script>
+    function switchTab(tabId) {
+      // อัปเดต Tab Buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      const activeBtn = document.getElementById('tab-' + tabId);
+      activeBtn.classList.add('active');
+      activeBtn.setAttribute('aria-selected', 'true');
+
+      // อัปเดต Tab Panels
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      document.getElementById('panel-' + tabId).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
